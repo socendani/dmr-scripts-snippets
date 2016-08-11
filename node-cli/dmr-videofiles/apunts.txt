@@ -1,0 +1,20 @@
+for %a in (*.MOV) do "C:\Program Files (x86)\VideoLAN\VLC\vlc.exe" -I dummy -vvv %a --sout=#transcode{vcodec=h264,vb=1024,acodec=mp4,ab=192,channels=2,deinterlace}:standard{access=file,mux=ts,dst=%a.mp4} vlc://quit
+
+
+for %a in (*.MOV) do "C:\Program Files (x86)\VideoLAN\VLC\vlc.exe" -I dummy -vvv %a --sout=#transcode{vcodec=h264,vb=1920,acodec=mpga,ab=192,channels=2,deinterlace}:standard{access=file,mux=ts,dst=%a.mp4} vlc://quit
+
+ffmpeg -f concat -i <(printf "file '$PWD/%s'\n" ./*.MOV) -c copy salida.mov
+
+
+
+-------------------------------------
+WINDOWS   (solo hace falta instalar ffmpeg)
+
+RUTA: \\euromedice-nas\TEMPORAL\dmr
+
+(for %i in (*.MOV) do @echo file '%i') > dmr_list.txt
+ffmpeg -f concat -i dmr_list.txt -c copy dmr_output.mov
+ffmpeg -i dmr_output.mov -qscale 0 dmr_output.mp4
+
+-----------------------------------------
+

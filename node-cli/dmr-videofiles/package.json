@@ -1,0 +1,35 @@
+{
+  "name": "dmr-videofiles",
+  "version": "0.0.1",
+  "description": "Join, convert videofiles form camera and mobiles",
+  "main": "dmr-videofiles.js",
+  "dependencies": {
+    "async": "^2.0.1",
+    "fluent-ffmpeg": "^2.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/socendani/dmr-videofiles.git"
+  },
+  "keywords": [
+    "video",
+    "videojoin",
+    "ffmpeg"
+  ],
+  "author": "Dani Morte <socendani@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/socendani/dmr-videofiles/issues"
+  },
+  "homepage": "https://github.com/socendani/dmr-videofiles#readme",
+  "directories": {
+    "test": "tests"
+  }
+}
