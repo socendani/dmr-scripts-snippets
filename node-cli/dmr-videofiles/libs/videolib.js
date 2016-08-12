@@ -9,7 +9,7 @@ var utils = require('./utils.js');
 // var mergedVideo = fluent_ffmpeg();
 
 
-var createBCKDirectory = function (directory, videos) {
+var createBCKDirectory = function (directory, random_salida, videos, callback) {
   var subDirectory = directory + "/dmr_temp";
 
   //create subdir temp
@@ -19,26 +19,23 @@ var createBCKDirectory = function (directory, videos) {
         console.log(err);
         response.send("ERROR! Can't make the +" + subDirectory + " !!! \n");    // echo the result back
       } else {
-        console.log("Creando directorio temporal en " + subDirectory);
+        console.log("... Creando directorio temporal en: " + subDirectory);
       }
     });
   }
 
-  //CHECK good videos
-  //EL PRIMER VIDEO condicionará el JOIN de los videos
-
-
-
- 
-
-
-
-
   //Copy videos backup mode
+  // videos.forEach(function (videoName) {
+  //   fs.writeFileSync(subDirectory + "/bck_" + videoName, fs.readFileSync(directory + "/" + videoName));
+  // });
+  // console.log("Copiados " + videos.length + " videos al temporal en " + subDirectory);
+
+  //MOVE videos backup mode
   videos.forEach(function (videoName) {
-    fs.writeFileSync(subDirectory + "/bck_" + videoName, fs.readFileSync(directory + "/" + videoName));
+    fs.rename(directory + "/" + videoName, subDirectory + "/bck_" + random_salida + "_" + videoName);
   });
-  console.log("Copiados " + videos.length + " videos al temporal en " + subDirectory);
+  utils.log("... movidos " + videos.length + " videos al temporal en " + subDirectory);
+  callback();
 
 }
 exports.createBCKDirectory = createBCKDirectory;
@@ -47,63 +44,68 @@ exports.createBCKDirectory = createBCKDirectory;
 
 
 
-var unirMOV = function (directory, videos) {
+var unirMOV = function (directory, salida_name, videos, callback) {
   var mergedVideo = ffmpeg();
-  videos.forEach(function (videoName) {
-    // console.log(videoName);
-    mergedVideo = mergedVideo.addInput(directory + "/" + videoName);
-  });
 
-  // ffmpeg -f concat -i dmr_list.txt -c copy dmr_output.mov
-  var salida = "dmr_video_unido.mp4";
-  console.log("Uniendo ficheros MOV en " + salida);
-
-
-  mergedVideo.mergeToFile(directory + '/' + salida, './tmp/')
-    .on('error', function (err) {
-      console.log('Error ' + err.message);
-      
-    })
-    .on('end', function () {
-      console.log('Finished!');
-      return true;
+  try {
+    videos.forEach(function (videoName) {
+      mergedVideo = mergedVideo.addInput(directory + "/" + videoName);
     });
+    // ffmpeg -f concat -i dmr_list.txt -c copy dmr_output.mov
+    utils.log("... Uniendo ficheros en: " + salida_name);
 
+    mergedVideo.mergeToFile(directory + '/' + salida_name, './tmp/')
+      .on('error', function (err, stdout, stderr) {
+        utils.log('Error (1)!!!!!! ' + err.message);
+        //console.log("stdout:\n" + stdout);
+       // console.log("stderr:\n" + stderr); //this will contain more detailed debugging info
+      })
+      .on('end', function () {
+        // utils.log('Finished!');
+        callback();
+        // return true;
+      });
 
+  } catch (err) {
+    utils.log('Error (2)!!!!!!!!!!! ' + err.message);
+  }
 }
 exports.unirMOV = unirMOV;
 
 
 
 
-var convertToMp4 = function (directory, callback) {
-  // var outputFile = utils.getVideoNameForNormalizado(pathTofile);
 
-  // utils.deleteFileIfexists(outputFile);
 
-  // var comando = "ffmpeg -i dmr_output.mov -qscale 0 dmr_output.mp4";
+var convertToMp4 = function (origen, callback) {
+  try {
+    // if (origen) {
+    //   callback(".. fichero '" + fichero + "' existente...");
+    //   return;
+    // }
+    // utils.deleteFileIfexists(outputFile);
+    // var comando = "ffmpeg -i dmr_output.mov -qscale 0 dmr_output.mp4";
+    var salida = origen + ".mp4"; //mantenemos la extensión anterior como referencia
 
-  var origen = directory + "/dmr_output.mov";
-  var salida = directory + "/dmr_output.mp4";
+    var command = spawn('ffmpeg', ['-i', origen, '-q:v', '1', '-q:a', '2', salida]);
+    command.stdout.on('data', function (data) {
+      // console.log('stdout: ' + data);
+    });
 
-  console.log("Convirtiendo  " + origen + " a " + salida);
-  var command = spawn('ffmpeg', ['-i', origen, '-q:v', '1', '-q:a', '2', salida]);
-  command.stdout.on('data', function (data) {
-    // console.log('stdout: ' + data);
-  });
+    command.stderr.on('data', function (data) {
+      // console.log('stderr: ' + data);
+    });
 
-  command.stderr.on('data', function (data) {
-    // console.log('stderr: ' + data);
-  });
-
-  command.on('close', function (code) {
-    console.log('FFMpeg process exited with code ' + code);
-    // callback();
-  });
+    command.on('close', function (code) {
+      //eliminamos el fichero de original;
+      fs.unlink(origen);
+      //informamos que hemos acabado llamando a callback
+      callback("... Convertido " + origen + " en .MP4");
+    });
+  } catch (err) {
+    utils.log('Error (convertToMp4) ' + err.message);
+  }
 
 };
 
 exports.convertToMp4 = convertToMp4;
-
-
-

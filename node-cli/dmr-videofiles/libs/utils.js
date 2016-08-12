@@ -3,6 +3,11 @@ var spawn = require('child_process').spawn;
 
 exports = module.exports = {};
 
+var log= function(msg) {
+	console.log(msg);
+}
+exports.log=log;
+
 
 var getFilesFromDirWithExtension = function (directory, extension) {
 	//Ordenar por fecha UTC !!!

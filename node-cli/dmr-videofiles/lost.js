@@ -41,8 +41,9 @@ try {
 
 
   //pensado para hacer un BUBLE con cada extensión y así procesar todos
-  var arrayVideoExtensions = ['mov', '3gp','mp4', 'mpg', 'mkv', 'avi'];
+  var arrayVideoExtensions = ['mov', '3gp','mp4', 'mpg', 'xxxmp4'];
   // var arrayVideoExtensions = ['3gp'];
+
   arrayVideoExtensions.forEach(function (item) {
     var videoExtension = item;
 
@@ -75,9 +76,6 @@ try {
       video_master = directory + "/" + videos[0];
       ffmpeg.ffprobe(video_master, function (err, metadata) {
         // var format = metadata.format.format_long_name;
-        if (!metadata) {
-          return;
-        }
         var master_ancho = metadata.streams[0].coded_width;
         var master_alto = metadata.streams[0].coded_height;
         if (metadata.format.tags.creation_time === undefined) {
@@ -94,10 +92,6 @@ try {
             alto = metadata.streams[0].coded_height;
             // bit_rate=metadata.format.r_frame_rate;  //mismo bit_rate ¿sure?
             fecha = metadata.format.tags.creation_time;
-
-            //
-            //[h263 @ 00000000026d6340] The specified picture size of 320x240 is not valid for the H.263 codec.
-            //Valid sizes are 128x96, 176x144, 352x288, 704x576, and 1408x1152. Try H.263+.
 
             // console.log(metadata);
             // utils.log("... [" + videoExtension + "] VIDEO (" + path.basename(video) + ")=> Ancho: " + ancho + "/" + master_ancho + ", Alto:" + alto + "/" + master_alto + "  ,Fecha: " + fecha);
@@ -188,7 +182,8 @@ try {
   }); //forEach Extensions
 
 } catch (err) {
-  console.log("Erro cath general: "+ err);
+  console.log("************* ERRROR *************");
+  console.log(err);
 }
 
 
