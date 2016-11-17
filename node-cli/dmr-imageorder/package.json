@@ -1,0 +1,27 @@
+{
+  "name": "dmr-imageorder",
+  "version": "0.0.1",
+  "description": "Join, convert videofiles form camera and mobiles",
+  "main": "dmr-imageorder.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/socendani/dmr-imageorder.git"
+  },
+  "keywords": [
+    "image",
+    "picture files"
+  ],
+  "author": "Dani Morte <socendani@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/socendani/dmr-imageorder/issues"
+  },
+  "homepage": "https://github.com/socendani/dmr-imageorder#readme",
+  "directories": {
+    "test": "tests"
+  }
+}

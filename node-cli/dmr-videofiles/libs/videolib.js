@@ -32,7 +32,7 @@ var createBCKDirectory = function (directory, random_salida, videos, callback) {
 
   //MOVE videos backup mode
   videos.forEach(function (videoName) {
-    fs.rename(directory + "/" + videoName, subDirectory + "/bck_" + random_salida + "_" + videoName);
+    fs.rename(directory + "/" + videoName, subDirectory + "/" + videoName + "_bck_" + random_salida + "_" + videoName);
   });
   utils.log("... movidos " + videos.length + " videos al temporal en " + subDirectory);
   callback();
@@ -52,13 +52,16 @@ var unirMOV = function (directory, salida_name, videos, callback) {
       mergedVideo = mergedVideo.addInput(directory + "/" + videoName);
     });
     // ffmpeg -f concat -i dmr_list.txt -c copy dmr_output.mov
-    utils.log("... Uniendo ficheros en: " + salida_name);
+    utils.log("... Uniendo " + videos.length + " videos en: " + salida_name + " ....... be patience, please :-)");
 
     mergedVideo.mergeToFile(directory + '/' + salida_name, './tmp/')
       .on('error', function (err, stdout, stderr) {
         utils.log('Error (1)!!!!!! ' + err.message);
         //console.log("stdout:\n" + stdout);
-       // console.log("stderr:\n" + stderr); //this will contain more detailed debugging info
+        if (err.message.indexOf("Error configuring complex filters") >= 1) {
+          console.log("stderr:\n" + stderr); //this will contain more detailed debugging info
+          utils.log("****** DANI:::: Si surt un missatge COM aquest:  Input link in5:v0 parameters (size 1080x1920, SAR 1:1) do not match the corresponding output link in0:v0 parameters (1920x1080, SAR 1:1) ===> vol dir que el video 6 (in5:v0) te un framerate diferent  *****");
+        }
       })
       .on('end', function () {
         // utils.log('Finished!');

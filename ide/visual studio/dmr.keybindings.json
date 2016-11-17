@@ -1,0 +1,30 @@
+/***
+ ** Sobreescriure amb aquest keebinding. 
+ **
+ ** 2016.11.17 - @socendani
+ **/
+[{
+        "key": "ctrl+shift+c",
+        "command": "editor.action.commentLine",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "shift+alt+f",
+        "command": "editor.action.format"
+    },
+
+    {
+        "key": "ctrl+shift+alt+down",
+        "command": "editor.action.insertCursorBelow",
+        "when": "editorTextFocus"
+    },
+
+    {
+        "key": "ctrl+shift+down",
+        "command": "editor.action.copyLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+    }
+
+
+    // {"key": "alt+shift+f", "command": "phpformatter.fix", "when": "editorFocus"}
+]

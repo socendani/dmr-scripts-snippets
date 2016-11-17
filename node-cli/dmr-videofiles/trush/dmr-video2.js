@@ -1,49 +1,84 @@
 /***
  *
+ * 
+ * ======================= NOT USE
  * Dani Morte v.1.1
  * 2016.08
  *
- * usage: node dmr-videofiles.js   \\SHARED\FOLDER  true
- *  > true|false => Convertir a Mp4 
+ * usage: node dmr-videofiles.js   \\SHARED\FOLDER
  * 
- *
- *
--------------------------------------
-WINDOWS-CLI   (solo hace falta instalar ffmpeg)
-
-PROVESO MANUAL:::
-(for %i in (*.MOV) do @echo file '%i') > dmr_list.txt
-
-UNIR: ffmpeg -f concat -i dmr_list.txt -c copy dmr_output.mov
-
-CONVERTIR: ffmpeg -i dmr_output.mov -qscale 0 dmr_output.mp4
-
-... a tener encuenta:
-ffprobe -i "video.mp4" -show_entries format=duration -v quiet -of csv="p=0"
-ffprobe -v quiet -print_format json -show_format -show_streams somefile.asf
-
------------------------------------------
+ * node dmr-video2.js   C:\Temp\proves1\
+ * node dmr-video2.js   "C:\Temp\proves1"
+ * node dmr-video2.js   C:\\Temp\\proves1
+ * 
+ * 
+ * 
  */
 
-var VERSION = "1.1";
-var videoLib = require('./libs/videolib.js');
+global.VERSION = "1.5";
+var videoLib = require('./libs/videolib2.js');
 var utils = require('./libs/utils.js');
 var ffmpeg = require('fluent-ffmpeg');
 var async = require('async');
 var path = require('path');
-var videoDir = process.argv[2];
-var fraseRepetir = "";
-var convertirAMp4 = false || process.argv[3];
+var directory = process.argv[2] || ".";
 
+
+//Opcionales
+var convertirAMp4 = false || process.argv[3];
+var fraseRepetir = "";
 var gEliminarOld = false;
 
+
+
+
+
+
+
 try {
-  amazingLogo();
-  // node dmr-videofiles.js   \\euromedice-nas\TEMPORAL\dmr\proves3
+
+  //1. Pintamos el logo
+  videoLib.logo();
+
+  //2. Renombramos los ficheros segun sus metadatos. Síncronamente.
+  var promiseRenameFiles = new Promise(function (resolve, reject) {
+    utils.log("Directorio: " + directory);
+    var fs = require("fs");
+
+    fs.readdir(directory, function (err, items) {
+      console.log(items);
+
+      for (var i = 0; i < items.length; i++) {
+        console.log(items[i]);
+      }
+    });
+    // var files = fs.readdirSync(directory);
+    // console.log(files);
+
+    //   fs.readdirSync(directory).filter(function (element) {
+    //     console.log(element);
+    //   });
+    resolve(true);
+  })
+
+
+
+  promiseRenameFiles.then(function (empezamos) {
+    console.log("PASO 3:" + empezamos);
+  });
+
+  console.log("ZZZZZ");
+  return;
+
+
+  //3. Una vez renombrados, iniciamos el proceso
+
+
+  // node dmr-video2.js   C:\Temp\proves1
   // node dmr-videofiles.js   "\\euromedice-nas\TEMPORAL\dmr\proves2molones que te.cagas"
-  var directory = videoDir || ".";
+
   var parent_name = path.basename(directory).replace(/[^a-z0-9]/gi, '_').toLowerCase();
-  utils.log("Directorio: " + directory);
+
 
 
   //pensado para hacer un BUCLE con cada extensión y así procesar todos
@@ -227,17 +262,3 @@ try {
 
 
 
-function amazingLogo() {
-  utils.log("-------------------------------------------------------------------------------------------------------------------------------------------");
-  utils.log("------                                                                                                                             --------");
-  utils.log("------                                                                                                                             --------");
-  utils.log("------              Dani Morte     v. " + VERSION + "                                                                               ");
-  utils.log("------              usage: node dmr-videofiles.js   \\SHARED\FOLDER   true                                                         --------");
-  utils.log("------               > true|false => Convertir a Mp4                                                                               --------");
-  utils.log("------                                                                                                                             --------");
-  utils.log("------                                                                                                                             --------");
-  utils.log("-------------------------------------------------------------------------------------------------------------------------------------------");
-  utils.log("Using FFMpeg  + NodeJS + Mocha + Chai. GitHub: https://github.com/socendani/dmr-videofiles/                                                ");
-  utils.log("-------------------------------------------------------------------------------------------------------------------------------------------");
-
-}
