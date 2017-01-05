@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lia Restas v.1.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.min.js"></script>
+    <style>
+        html {
+            font-family: verdana;
+        }
+        
+        h1 {
+            font-size: 2em;
+        }
+        
+        input {
+            display: inline;
+            font-size: 2em;
+        }
+        
+        .green {
+            color: darkgreen;
+        }
+        
+        .red {
+            color: darkred;
+        }
+        
+        .ejercicio {
+            /*border: 1px solid lightgray;*/
+            padding: 10px;
+            font-size: 4em;
+        }
+    </style>
+    <script>
+        // Returns a random integer between min(inclusive) and max(inclusive)
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function cuenta_atras(duration) {
+            if (isNaN(duration)) {
+                return false;
+            }
+            display = document.querySelector('#time');;
+            duration = duration * 60;
+            var timer = duration,
+                minutes, seconds;
+
+            setInterval(function() {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = duration;
+                    $('#myModal').modal();
+                }
+            }, 1000);
+        }
+
+        angular.module('app', ['ngSanitize'])
+            .controller('restasController', function($scope) {
+                $scope.tiempo = 2;
+                $scope.errors = 0;
+                $scope.corrects = 0;
+                $scope.contador = 0;
+                $scope.anteriores = [];
+                $scope.siguiente = function(e) {
+                    if (e.keyCode == 13) {
+                        resta_real = $scope.a - $scope.b;
+                        resta_usuari = $scope.resposta;
+                        $scope.contador++;
+                        if (resta_usuari == resta_real) {
+                            $scope.corrects++;
+                            $scope.acumular($scope.a, $scope.b,
+                                "<span class='glyphicon glyphicon-ok green'></span>");
+                        } else {
+                            $scope.errors++;
+                            $scope.acumular($scope.a, $scope.b,
+                                "<span class='glyphicon glyphicon-remove red'></span>"
+                            );
+                        }
+                        $scope.crear_resta();
+                    }
+
+                };
+
+
+                $scope.crear_resta = function() {
+                    $scope.resposta = "";
+                    $scope.a = getRandomInt(9, 19);
+                    $scope.b = getRandomInt(1, 9);
+                }
+
+                $scope.acumular = function(x, y, z) {
+                    item = {
+                        "a": x,
+                        "b": y,
+                        "c": z
+                    };
+                    $scope.anteriores.push(item);
+                }
+
+                $scope.start = function() {
+                    $scope.isDisabled = true;
+                    cuenta_atras($scope.tiempo);
+                    $scope.crear_resta();
+                }
+
+                $("#id_all").show();
+
+
+
+
+            });
+        $(document).ready(function() {
+            $('#myModal').on('hidden.bs.modal', function() {
+                window.location.reload();
+            })
+        });
+    </script>
+</head>
+
+<body>
+    <div id="id_all" ng-controller="restasController" style="display:none; text-align:center">
+        <h1>Substractions, ummm ... What's your name? :</h1>
+        <input type="text" ng-model="yourName" placeholder="Enter a name here">
+        <div ng-show="yourName">
+            <hr>
+            <h1>Hello
+                <font color="green">{{yourName}}</font>, are you ready for learn ?? !!!</h1>
+            <h1 style="display:inline">How much minutes do you want for this practice? </h1>
+            <input type="number" ng-model="tiempo" style="width: 80px; text-align: right" ng-disabled="isDisabled">
+            <br><button ng-click="start()" class="btn btn-success"> !! FIRE  !!</button>
+            <br>
+            <div class="ejercicio" ng-show="isDisabled">
+                <font color="green">Hits: <b>{{corrects}}</b></font>
+                /
+                <font color="red">Errors: <b>{{errors}}</b> </font>
+                / Counter: <b> {{contador}} </b>
+                <hr>
+                <span id="time"></span>
+                <br>
+                <span ng-bind="a"></span> - <span ng-bind="b"></span> =
+                <input type="number" ng-model="resposta" ng-keyup="siguiente($event)" style="width: 100px; text-align: right; font-size: 40px">
+            </div>
+            <hr>
+            <ul style="margin-left: 30px;text-align: left; list-style: none;">
+                <li style="font-size: 2em; display: inline-block; margin-right: 10px;" ng-repeat="a in anteriores">{{a.a}} - {{a.b}} .. <span ng-bind-html="a.c"></span></li>
+            </ul>
+        </div>
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="ejercicio">
+                            <h2>Your Score
+                                <font color="green">{{yourName}}</font>
+                            </h2>
+                            <br>
+                            <font color="green">Hits: <b>{{corrects}}</b></font>
+                            <br>
+                            <font color="red">Errors: <b>{{errors}}</b> </font>
+                            <br>Counter: <b> {{contador}} </b>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

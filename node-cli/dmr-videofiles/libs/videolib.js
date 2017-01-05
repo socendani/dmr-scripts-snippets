@@ -52,12 +52,13 @@ var unirMOV = function (directory, salida_name, videos, callback) {
       mergedVideo = mergedVideo.addInput(directory + "/" + videoName);
     });
     // ffmpeg -f concat -i dmr_list.txt -c copy dmr_output.mov
-    utils.log("... Uniendo " + videos.length + " videos en: " + salida_name + " ....... be patience, please :-)");
+    utils.log("... Uniendo " + videos.length + " videos en: [" + salida_name + "] ....... be patience, please :-)");
 
     mergedVideo.mergeToFile(directory + '/' + salida_name, './tmp/')
       .on('error', function (err, stdout, stderr) {
         utils.log('Error (1)!!!!!! ' + err.message);
-        //console.log("stdout:\n" + stdout);
+        console.log("stdout:\n" + stdout);
+	console.log("stderr:\n" + stderr);
         if (err.message.indexOf("Error configuring complex filters") >= 1) {
           console.log("stderr:\n" + stderr); //this will contain more detailed debugging info
           utils.log("****** DANI:::: Si surt un missatge COM aquest:  Input link in5:v0 parameters (size 1080x1920, SAR 1:1) do not match the corresponding output link in0:v0 parameters (1920x1080, SAR 1:1) ===> vol dir que el video 6 (in5:v0) te un framerate diferent  *****");

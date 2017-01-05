@@ -3,11 +3,17 @@
  * Dani Morte v.1.1
  * 2016.08
  *
- * usage: node dmr-videofiles.js   \\SHARED\FOLDER  true
+ * usage WINDOWS SHARED: node dmr-videofiles.js   \\SHARED\FOLDER  true
  *  > true|false => Convertir a Mp4 
  * 
  *
+   LINUX:::::
+ * sudo mkdir /mnt/smbshare
+ * sudo mount -t cifs //192.168.10.3/temporal/SHARED   /mnt/smbshare
+ * usage $ node dmr-videofiles.js  /mnt/smbshare  true
  *
+# mount -t cifs -o username:<username of the smb server> <nfs-server>:/<share> /mnt/<share-loc>
+# mount -t cifs -o username:john server1:/share1 /mnt/MyShare
 -------------------------------------
 WINDOWS-CLI   (solo hace falta instalar ffmpeg)
 
@@ -23,6 +29,12 @@ ffprobe -i "video.mp4" -show_entries format=duration -v quiet -of csv="p=0"
 ffprobe -v quiet -print_format json -show_format -show_streams somefile.asf
 
 -----------------------------------------
+DEBIAN
+sudo apt-get install cifs-utils
+sudo apt-get install ffmpeg  
+sudo apt-get install ubuntu-restricted-extras
+
+
  */
 
 var VERSION = "1.1";
