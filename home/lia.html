@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Lia Restas v.1.1</title>
+    <title>Lia Restas v.1.2</title>
+    <meta name="author" content="Dani Morte <socendani at gmail dot com">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -16,12 +17,12 @@
         }
         
         h1 {
-            font-size: 2em;
+            font-size: 1.5em;
         }
         
         input {
             display: inline;
-            font-size: 2em;
+            font-size: 1.8em;
         }
         
         .green {
@@ -36,6 +37,26 @@
             /*border: 1px solid lightgray;*/
             padding: 10px;
             font-size: 4em;
+        }
+        
+        .resposta {
+            font-size: 0.5em;
+            color: navy;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                background-color: lightgreen;
+            }
+            .ejercicio {
+                font-size: 1.8em;
+            }
+            input {
+                font-size: 1em;
+            }
+            .resposta {
+                font-size: 1em;
+            }
         }
     </style>
     <script>
@@ -78,21 +99,24 @@
                 $scope.anteriores = [];
                 $scope.siguiente = function(e) {
                     if (e.keyCode == 13) {
-                        resta_real = $scope.a - $scope.b;
-                        resta_usuari = $scope.resposta;
-                        $scope.contador++;
-                        if (resta_usuari == resta_real) {
-                            $scope.corrects++;
-                            $scope.acumular($scope.a, $scope.b,
-                                "<span class='glyphicon glyphicon-ok green'></span>");
-                        } else {
-                            $scope.errors++;
-                            $scope.acumular($scope.a, $scope.b,
-                                "<span class='glyphicon glyphicon-remove red'></span>"
-                            );
-                        }
-                        $scope.crear_resta();
+                        $scope.calcular();
                     }
+                }
+                $scope.calcular = function() {
+                    resta_real = $scope.a - $scope.b;
+                    resta_usuari = $scope.resposta;
+                    $scope.contador++;
+                    if (resta_usuari == resta_real) {
+                        $scope.corrects++;
+                        $scope.acumular($scope.a, $scope.b,
+                            "<span class='glyphicon glyphicon-ok green'></span>");
+                    } else {
+                        $scope.errors++;
+                        $scope.acumular($scope.a, $scope.b,
+                            "<span class='glyphicon glyphicon-remove red'></span>"
+                        );
+                    }
+                    $scope.crear_resta();
 
                 };
 
@@ -133,17 +157,16 @@
 </head>
 
 <body>
-    <div id="id_all" ng-controller="restasController" style="display:none; text-align:center">
-        <h1>Substractions, ummm ... What's your name? :</h1>
-        <input type="text" ng-model="yourName" placeholder="Enter a name here">
+    <div id="id_all" ng-controller="restasController" style="display:none; text-align:center" class="col-md-12">
+        <h1>Substractions, ummm ... What's your name?</h1>
+        <input type="text" ng-model="yourName" placeholder="Enter your name here">
         <div ng-show="yourName">
-            <hr>
             <h1>Hello
-                <font color="green">{{yourName}}</font>, are you ready for learn ?? !!!</h1>
-            <h1 style="display:inline">How much minutes do you want for this practice? </h1>
+                <font color="green">{{yourName}} !!</font>,<br> are you ready to learn ?? !!!</h1>
+            <h1 style="display:inline">How many minutes do you want for this round? </h1>
             <input type="number" ng-model="tiempo" style="width: 80px; text-align: right" ng-disabled="isDisabled">
-            <br><button ng-click="start()" class="btn btn-success"> !! FIRE  !!</button>
-            <br>
+            <div class="clearfix"></div><br>
+            <button ng-click="start()" class="btn btn-success"> !! FIRE  !!</button>
             <div class="ejercicio" ng-show="isDisabled">
                 <font color="green">Hits: <b>{{corrects}}</b></font>
                 /
@@ -153,7 +176,8 @@
                 <span id="time"></span>
                 <br>
                 <span ng-bind="a"></span> - <span ng-bind="b"></span> =
-                <input type="number" ng-model="resposta" ng-keyup="siguiente($event)" style="width: 100px; text-align: right; font-size: 40px">
+                <input class="resposta" type="number" ng-model="resposta" ng-keyup="siguiente($event)" style="width: 130px;  text-align: right;">
+                <button ng-click="calcular()" class="btn btn-primary visible-xs-inline">OK</button>
             </div>
             <hr>
             <ul style="margin-left: 30px;text-align: left; list-style: none;">
