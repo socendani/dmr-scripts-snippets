@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lia Mates v.1.3</title>
+    <meta name="author" content="Dani Morte <socendani at gmail dot com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.min.js"></script>
+    <script src="./script.js"></script>
+    <style src="./style.css"></style>
+    <script>
+        $(document).ready(function() {
+            $('#myModal').on('hidden.bs.modal', function() {
+                window.location.reload();
+            })
+        });
+    </script>
+</head>
+
+<body>
+    <div id="id_all" xstyle="display:none; text-align:center" class="col-md-12">
+        <h1>Maths!, ummm great!</h1>
+
+        <div ng-controller="comunController" class="col-xs-12">
+
+            <div xng-hide="yourPwd">
+                {{hello}}
+
+                <h3>What's your name?
+                    <input type="text" ng-model="yourName" placeholder="Enter your name here">
+                </h3>
+
+                <h3 ng-show="yourName">and write a password only known by you
+                    <input type="password" ng-model="yourPwd" placeholder="Enter your password here">
+                </h3>
+
+                <h3>Hello
+                    <font color="green">{{yourName}} !!</font>,<br> are you ready to practice ??
+                </h3>
+
+                <button ng-click="ready()" class="btn btn-success">Ready for action</button>
+            </div>
+
+            <div>
+                <h3 style="display:inline">How many minutes do you want for this round? </h3>
+                <input type="number" ng-model="tiempo" style="width: 80px; text-align: right" ng-disabled="isDisabled">
+
+                <div class="clearfix"></div><br>
+                <button ng-click="start()" class="btn btn-success"> !! FIRE  !!</button>
+                <hr>
+                <span id="time"></span>
+                <br>
+
+            </div>
+        </div>
+
+
+
+
+        <div ng-controller="restasController">
+
+            Tiempo= {{yourName}}
+
+
+            <div class="ejercicio" ng-show="isDisabled">
+                <font color="green">Hits: <b>{{corrects}}</b></font>/
+                <font color="red">Errors: <b>{{errors}}</b> </font>/
+                <font color="gray">Counter: <b> {{contador}} </b></font>
+
+                <span ng-bind="a"></span> - <span ng-bind="b"></span> =
+                <input class="resposta" type="number" ng-model="resposta" ng-keyup="siguiente($event)" style="width: 130px;  text-align: right;">
+                <button ng-click="calcular()" class="btn btn-primary visible-xs-inline">OK</button>
+            </div>
+
+
+            <hr>
+            <div class="col-xs-12 col-md-10 col-md-offset-2">
+                <ul style="margin-left: 30px;text-align: left; list-style: none;">
+                    <li style="font-size: 2em; display: inline-block; margin-right: 10px;" ng-repeat="a in anteriores">{{a.a}} - {{a.b}} .. <span ng-bind-html="a.c"></span></li>
+                </ul>
+            </div>
+
+
+            <!-- Modal Score-->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="ejercicio">
+                                <h2>Your Score
+                                    <font color="green">{{yourName}}</font>
+                                </h2>
+                                <br>
+                                <font color="green">Hits: <b>{{corrects}}</b></font>
+                                <br>
+                                <font color="red">Errors: <b>{{errors}}</b> </font>
+                                <br>Counter: <b> {{contador}} </b>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</body>
+
+</html>

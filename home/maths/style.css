@@ -1,0 +1,46 @@
+html {
+    font-family: verdana;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+input {
+    display: inline;
+    font-size: 1.8em;
+}
+
+.green {
+    color: darkgreen;
+}
+
+.red {
+    color: darkred;
+}
+
+.ejercicio {
+    /*border: 1px solid lightgray;*/
+    padding: 10px;
+    font-size: 4em;
+}
+
+.resposta {
+    font-size: 0.5em;
+    color: navy;
+}
+
+@media (max-width: 768px) {
+    body {
+        background-color: lightgreen;
+    }
+    .ejercicio {
+        font-size: 1.8em;
+    }
+    input {
+        font-size: 1em;
+    }
+    .resposta {
+        font-size: 1em;
+    }
+}

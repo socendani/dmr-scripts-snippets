@@ -1,0 +1,11 @@
+// Place your settings in this file to overwrite the default settings
+{
+
+    "php.validate.executablePath": "/usr/bin/php7.0",
+    "editor.tabSize": 2,
+    "typescript.check.tscVersion": false,
+    "workbench.iconTheme": "vscode-icons",
+    "editor.minimap.enabled": true,
+    "vsicons.dontShowNewVersionMessage": true,
+    "vsicons.projectDetection.autoReload": true
+}
