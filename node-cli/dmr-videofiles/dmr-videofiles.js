@@ -3,8 +3,8 @@
  * Dani Morte v.1.1
  * 2016.08
  *
- * usage WINDOWS SHARED: node dmr-videofiles.js   \\SHARED\FOLDER  true
- *  > true|false => Convertir a Mp4 
+ * usage WINDOWS SHARED: node dmr-videofiles.js   '\\SHARED\FOLDER'  true
+ *  > true|false => Convertir a Mp4 (default true)
  * 
  *
    LINUX:::::
@@ -37,7 +37,7 @@ sudo apt-get install ubuntu-restricted-extras
 
  */
 
-var VERSION = "1.1";
+var VERSION = "1.2.0 v.06.2017";
 var videoLib = require('./libs/videolib.js');
 var utils = require('./libs/utils.js');
 var ffmpeg = require('fluent-ffmpeg');
@@ -45,7 +45,7 @@ var async = require('async');
 var path = require('path');
 var videoDir = process.argv[2];
 var fraseRepetir = "";
-var convertirAMp4 = false || process.argv[3];
+var convertirAMp4 = true || process.argv[3];
 
 var gEliminarOld = false;
 
@@ -188,7 +188,7 @@ try {
             try {
               utils.log("... [" + videoExtension + "] Se van a unir " + videos.length + " videos");
               if (videos.length < itemsMax) {
-                fraseRepetir = "***************  (" + itemsMax + "/" + videos.length + ") Debe repetir el proceso pues hay diferentes tamaños de pantalla *********";
+                fraseRepetir = " !!!!***************  (" + itemsMax + "/" + videos.length + ") Debe repetir el proceso pues hay diferentes tamaños de pantalla *********!!!";
               }
               var random_salida = Math.random().toString().replace(".", "9");
               var fichero_salida = "" + master_fecha + "_" + master_ancho + "x" + master_alto + "_" + parent_name + "_" + random_salida + "_DMR." + videoExtension;
@@ -244,8 +244,8 @@ function amazingLogo() {
   utils.log("------                                                                                                                             --------");
   utils.log("------                                                                                                                             --------");
   utils.log("------              Dani Morte     v. " + VERSION + "                                                                               ");
-  utils.log("------              usage: node dmr-videofiles.js   \\SHARED\FOLDER   true                                                         --------");
-  utils.log("------               > true|false => Convertir a Mp4                                                                               --------");
+  utils.log("------              usage: node dmr-videofiles.js   '\\SHARED\FOLDER'   true                                                         --------");
+  utils.log("------               > true|false => Convertir a Mp4  default = true                                                            --------");
   utils.log("------                                                                                                                             --------");
   utils.log("------                                                                                                                             --------");
   utils.log("-------------------------------------------------------------------------------------------------------------------------------------------");

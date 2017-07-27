@@ -1,0 +1,8 @@
+ffmpeg -i concat:"a1.avi|a2.avi" -codec copy "La leyenda del Zorro.avi"
+
+
+
+
+usar_join_mp4
+
+

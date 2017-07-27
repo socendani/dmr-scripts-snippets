@@ -1,0 +1,1 @@
+{imageyear}-{imagemonth}-{imageday}_{imagetime}_{num4}.jpg
