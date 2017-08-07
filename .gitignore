@@ -77,3 +77,5 @@ nbproject
 .settings
 composer.lock
 
+
+vagrant/

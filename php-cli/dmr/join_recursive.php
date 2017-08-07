@@ -109,7 +109,7 @@ if (1==1) {
             $meta2=extractMetadata($fichero_salida2);
             $newname=str_replace("joined","duration.".$meta2["duration"],$fichero_salida2);
             $newname=str_replace(".mp4.meta","",$newname);    
-            rename("../".$fichero_salida2, "../".$newname);
+            rename($fichero_salida2, $newname);
             
         }
 

@@ -138,8 +138,9 @@ function convertoMp4($filename, $extension) {
 
 
 
-function niceFilename($original) {
-    $original=trim(strtolower(basename($original)));
+function niceFilename($original_completo) {
+
+    $original=trim(strtolower(basename($original_completo)));
     // $original = strtr($original, 'áàâäãåçéèêëíìîïñóòôöõúùûüýÿñ', 'aaaaaaceeeeiiiinooooouuuuyyn'); //bad
     $original =iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $original);
     // p($original);
@@ -171,6 +172,13 @@ function niceFilename($original) {
     // $bonito=str_replace(".mov.rd.",".rd.",$bonito);
     $bonito=str_replace("...",".",$bonito);
     $bonito=str_replace("..",".",$bonito);
+
+    if (strstr($original_completo,"joined")!="" ) {
+        $meta=extractMetadata($original_completo);
+        print_r($meta);
+        $bonito=str_replace("joined","duration.".$meta["duration"],$bonito);
+    }
+    $bonito=str_replace(".mp4.meta","",$bonito); 
 
     return $bonito;
 }
