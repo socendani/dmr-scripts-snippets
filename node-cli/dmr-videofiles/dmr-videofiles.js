@@ -37,7 +37,7 @@ sudo apt-get install ubuntu-restricted-extras
 
  */
 
-var VERSION = "1.2.0 v.06.2017";
+var VERSION = "1.2.1 v.07.2017";
 var videoLib = require('./libs/videolib.js');
 var utils = require('./libs/utils.js');
 var ffmpeg = require('fluent-ffmpeg');
@@ -54,7 +54,7 @@ try {
   // node dmr-videofiles.js   \\euromedice-nas\TEMPORAL\dmr\proves3
   // node dmr-videofiles.js   "\\euromedice-nas\TEMPORAL\dmr\proves2molones que te.cagas"
   var directory = videoDir || ".";
-  var parent_name = path.basename(directory).replace(/[^a-z0-9]/gi, '_').toLowerCase();
+  var parent_name = path.basename(directory).replace(/[^a-z0-9]/gi, '.').toLowerCase();
   utils.log("Directorio: " + directory);
 
 
@@ -191,7 +191,7 @@ try {
                 fraseRepetir = " !!!!***************  (" + itemsMax + "/" + videos.length + ") Debe repetir el proceso pues hay diferentes tamaños de pantalla *********!!!";
               }
               var random_salida = Math.random().toString().replace(".", "9");
-              var fichero_salida = "" + master_fecha + "_" + master_ancho + "x" + master_alto + "_" + parent_name + "_" + random_salida + "_DMR." + videoExtension;
+              var fichero_salida = "" + master_fecha + "." + master_ancho + "x" + master_alto + "." + parent_name + "." + random_salida + "_DMR." + videoExtension;
               utils.log("... [" + videoExtension + "] Fichero de salida: " + fichero_salida);
 
               videoLib.unirMOV(directory, fichero_salida, videos, function () {

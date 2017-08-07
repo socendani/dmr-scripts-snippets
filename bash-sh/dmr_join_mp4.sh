@@ -19,5 +19,6 @@ do
 done
 
 ffmpeg -f concat -i list.txt -c copy joined-out.mp4 && rm list.txt
+# ffmpeg -f concat -i list.txt -c copy joined-out.mp4 
 
 
