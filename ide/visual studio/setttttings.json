@@ -1,7 +1,7 @@
 // Place your settings in this file to overwrite the default settings
 {
 
-    "php.validate.executablePath": "/usr/bin/php7.0",
+    "php.validate.executablePath": "/usr/bin/php",
     "editor.tabSize": 2,
     "typescript.check.tscVersion": false,
    
@@ -11,7 +11,7 @@
 
     "vsicons.projectDetection.disableDetect": true,
     "workbench.iconTheme": "vscode-icons",
-    "editor.fontFamily": "'Noto Mono', 'Courier New', monospace, 'Droid Sans Fallback'",
+    "editor.fontFamily": "'JetBrains Mono','Noto Mono', 'Courier New', monospace, 'Droid Sans Fallback'",
     "editor.multiCursorModifier": "alt",
     "search.exclude": {
         "**/.git": true,
